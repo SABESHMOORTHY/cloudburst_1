@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="shortcut icon" href="img/bg.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+    <div class="app-main" id="parent">
+        <div class="header">
+            <h4>Get Weather</h4>
+        </div>
+        <div class="test-predictor" style="margin-bottom: 20px; text-align: center;">
+            <label for="cloudburst-level" style="color: white; margin-right: 10px;">Test Cloudburst Level:</label>
+            <select id="cloudburst-level" class="search-bar" style="width: auto; display: inline-block; margin: 0 10px;">
+                <option value="">-- Select Level --</option>
+                <option value="1">Level 1: Minimal (0-5 mm/hr)</option>
+                <option value="5">Level 5: Moderate (20-25 mm/hr)</option>
+                <option value="10">Level 10: Severe (60-70 mm/hr)</option>
+                <option value="14">Level 14: Cloudburst Threshold (100-110 mm/hr)</option>
+                <option value="16">Level 16: Cloudburst Level-2 (125-150 mm/hr)</option>
+                <option value="18">Level 18: Cloudburst Level-4 (175-200 mm/hr)</option>
+                <option value="20">Level 20: Super Cloudburst (250+ mm/hr)</option>
+            </select>
+            <button id="test-level" class="search-btn" style="margin-left: 10px;">Test Level</button>
+        </div>
+        <div class="searchInputBox">
+            <input type="text" name="" id="input-box" class="input-box" placeholder="enter city name">
+        </div>
+        <div class="weather-body" id="weather-body">
+            <!-- weather-body will be append through JavaScript -->
+        </div>
+        <div class="cloudburst-prediction" id="cloudburst-prediction">
+            <!-- Cloudburst prediction will be displayed here -->
+        </div>
+            
+    </div>
+   
+
+    <!-- font awesome icon cdn  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- sweetalert cdn........ -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Ubuntu:wght@300&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background-image: url("img/bg1.jpg");
+  min-height: 92vh;
+  overflow: auto;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+.header h4 {
+  color: #da1e4e;
+  font-weight: 700;
+  font-size: 2.4rem;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+.app-main {
+  min-height: 10vh;
+  width: 30vw;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  border-radius: 15px;
+  background: linear-gradient(
+    to top,
+    #34e89e,
+    #FF9A8B
+  ); /* Teal to Soft Pink Gradient */
+}
+.app-main > * {
+  margin-bottom: 20px;
+}
+.input-box {
+  width: 100%;
+  background: azure;
+  color: #e4603a;
+  font-weight: 500;
+  border: none;
+  font-size: 1.7rem;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  outline: none;
+  border: none;
+}
+
+.weather-body {
+  color: #fff;
+  padding: 20px;
+  line-height: 2rem;
+  border-radius: 10px;
+  background-color: #eff1f3;
+  display: none;
+  background: linear-gradient(
+    to top,
+    #da1e4e,
+    #e4603a
+  );
+}
+.location-deatils {
+  font-weight: bold;
+}
+.weather-status {
+  padding: 20px;
+}
+.temp {
+  font-size: 5rem;
+  font-weight: 700;
+  margin-bottom: 20px 0px;
+  text-shadow: 2px 4px rgba(0, 0, 0, 0.1);
+}
+.weather {
+  margin-top: 25px;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.min-max {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 15px;
+}
+
+.day_details {
+  padding: 20px;
+}
+.sun-detail,
+.basic {
+  font-size: 1rem;
+}
+#weather-icon {
+  color: black;
+}
+
+/* Cloudburst Prediction Styles */
+.cloudburst-prediction {
+    margin: 20px 0;
+    border-radius: 12px;
+    color: #fff;
+    text-align: left;
+    display: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Alert Level Colors */
+.cloudburst-alert {
+    padding: 20px;
+    border-left: 5px solid #4CAF50; /* Default color */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+}
+
+.cloudburst-alert.alert-low {
+    border-color: #4CAF50; /* Green */
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.cloudburst-alert.alert-moderate {
+    border-color: #FFC107; /* Yellow */
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.cloudburst-alert.alert-high {
+    border-color: #FF9800; /* Orange */
+    background: rgba(255, 152, 0, 0.1);
+}
+
+.cloudburst-alert.alert-critical {
+    border-color: #F44336; /* Red */
+    background: rgba(244, 67, 54, 0.1);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+}
+
+.cloudburst-alert h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+/* Severity Meter */
+.severity-meter {
+    margin: 15px 0;
+}
+
+.severity-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.severity-bar {
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    margin: 10px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.severity-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A, #FFC107, #FF9800, #F44336);
+    border-radius: 6px;
+    transition: width 0.8s ease-out;
+    position: relative;
+}
+
+.severity-description {
+    font-size: 0.95rem;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+/* Rainfall Info */
+.rainfall-info {
+    margin: 15px 0;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.rainfall-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.rainfall-amount i {
+    color: #03A9F4;
+}
+
+.rainfall-amount small {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-left: auto;
+}
+
+/* Weather Factors */
+.weather-factors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.factor {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.factor i {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #03A9F4;
+}
+
+/* Alert Actions */
+.alert-actions {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.btn-alert {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-alert:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .weather-factors {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .cloudburst-alert h3 {
+        font-size: 1.2rem;
+    }
+    
+    .rainfall-amount {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .rainfall-amount small {
+        margin-left: 0;
+    }
+}
+
+/* Adjustments for mobile */
+@media screen and (max-width: 600px) {
+  .cloudburst-prediction {
+    padding: 10px;
+  }
+  
+  .cloudburst-alert h3 {
+    font-size: 1.2rem;
+  }
+  
+  .factors {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .app-main {
+    width: 95%;
+    padding: 10px;
+  }
+  body {
+    min-height: 94vh;
+  }
+}
