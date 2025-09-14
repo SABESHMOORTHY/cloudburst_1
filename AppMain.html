@@ -5,44 +5,138 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather app</title>
+    <title>Cloudburst Prediction System</title>
     <link rel="shortcut icon" href="img/bg.jpg" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .nav-container {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .nav-buttons {
+            display: inline-flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .nav-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-button.active {
+            background: #ffffff;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 
 <body>
+    <nav class="nav-container">
+        <div class="nav-buttons">
+            <button class="nav-button active" onclick="showPage('weather')">Weather</button>
+            <button class="nav-button" onclick="showPage('predictor')">Predictor</button>
+        </div>
+    </nav>
 
-
-    <div class="app-main" id="parent">
-        <div class="header">
-            <h4>Get Weather</h4>
-        </div>
-        <div class="test-predictor" style="margin-bottom: 20px; text-align: center;">
-            <label for="cloudburst-level" style="color: white; margin-right: 10px;">Test Cloudburst Level:</label>
-            <select id="cloudburst-level" class="search-bar" style="width: auto; display: inline-block; margin: 0 10px;">
-                <option value="">-- Select Level --</option>
-                <option value="1">Level 1: Minimal (0-5 mm/hr)</option>
-                <option value="5">Level 5: Moderate (20-25 mm/hr)</option>
-                <option value="10">Level 10: Severe (60-70 mm/hr)</option>
-                <option value="14">Level 14: Cloudburst Threshold (100-110 mm/hr)</option>
-                <option value="16">Level 16: Cloudburst Level-2 (125-150 mm/hr)</option>
-                <option value="18">Level 18: Cloudburst Level-4 (175-200 mm/hr)</option>
-                <option value="20">Level 20: Super Cloudburst (250+ mm/hr)</option>
-            </select>
-            <button id="test-level" class="search-btn" style="margin-left: 10px;">Test Level</button>
-        </div>
-        <div class="searchInputBox">
-            <input type="text" name="" id="input-box" class="input-box" placeholder="enter city name">
-        </div>
-        <div class="weather-body" id="weather-body">
-            <!-- weather-body will be append through JavaScript -->
-        </div>
-        <div class="cloudburst-prediction" id="cloudburst-prediction">
-            <!-- Cloudburst prediction will be displayed here -->
-        </div>
-            
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="left">⚠️ High-risk weather alerts will be displayed here. Stay safe and monitor local advisories.</marquee>
     </div>
-   
+
+    <!-- Weather Page -->
+    <div id="weather-page" class="page active">
+        <div class="app-main card" id="parent">
+            <div class="header">
+                <h4>Get Weather</h4>
+            </div>
+            <div class="searchInputBox">
+                <input type="text" name="" id="input-box" class="input-box" placeholder="enter city name">
+            </div>
+            <div class="weather-body" id="weather-body">
+                <!-- weather-body will be append through JavaScript -->
+            </div>
+            <div class="cloudburst-prediction" id="cloudburst-prediction">
+                <!-- Cloudburst prediction will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Predictor Page -->
+    <div id="predictor-page" class="page">
+        <div class="app-main card">
+            <h2>Manual Cloudburst Prediction</h2>
+            <div class="form-container">
+                <form id="manual-prediction-form">
+                    <div class="form-group">
+                        <label for="humidity">Humidity (%)</label>
+                        <input type="number" id="humidity" name="humidity" min="0" max="100" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C)</label>
+                        <input type="number" id="temperature" name="temperature" min="-50" max="50" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pressure">Atmospheric Pressure (hPa)</label>
+                        <input type="number" id="pressure" name="pressure" min="800" max="1100" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wind-speed">Wind Speed (km/h)</label>
+                        <input type="number" id="wind-speed" name="wind-speed" min="0" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rainfall">Rainfall (mm/hr)</label>
+                        <input type="number" id="rainfall" name="rainfall" min="0" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cloud-density">Cloud Density</label>
+                        <select id="cloud-density" name="cloud-density" required>
+                            <option value="" disabled selected>Select density</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Predict Cloudburst</button>
+                </form>
+                <div id="prediction-result" class="result-container" style="display: none;">
+                    <h3>Prediction Result</h3>
+                    <div id="prediction-text" class="prediction-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- font awesome icon cdn  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -50,7 +144,82 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- sweetalert cdn........ -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(pageId + '-page').classList.add('active');
+            document.querySelector(`.nav-button[onclick="showPage('${pageId}')"]`).classList.add('active');
+        }
+
+        document.getElementById('manual-prediction-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const humidity = parseFloat(document.getElementById('humidity').value);
+            const pressure = parseFloat(document.getElementById('pressure').value);
+            const windSpeed = parseFloat(document.getElementById('wind-speed').value);
+            const rainfall = parseFloat(document.getElementById('rainfall').value);
+            const cloudDensity = document.getElementById('cloud-density').value;
+
+            // Map cloud density to a numeric value (0-100)
+            const cloudCoverMap = { low: 30, medium: 60, high: 90 };
+            const cloudCover = cloudCoverMap[cloudDensity] || 0;
+
+            // Calculate risk score (0-100)
+            let riskScore = 0;
+
+            // 1. Rainfall contribution (up to 70 points)
+            riskScore += Math.min(rainfall * 0.7, 70);
+
+            // 2. Humidity contribution (up to 10 points)
+            if (humidity > 90) riskScore += 10;
+            else if (humidity > 80) riskScore += 7;
+            else if (humidity > 70) riskScore += 4;
+
+            // 3. Pressure contribution (up to 10 points)
+            if (pressure < 990) riskScore += 10;
+            else if (pressure < 1000) riskScore += 7;
+            else if (pressure < 1010) riskScore += 4;
+
+            // 4. Wind speed contribution (up to 5 points)
+            if (windSpeed > 40) riskScore += 5;
+            else if (windSpeed > 25) riskScore += 3;
+
+            // 5. Cloud cover contribution (up to 5 points)
+            if (cloudCover > 80) riskScore += 5;
+            else if (cloudCover > 60) riskScore += 3;
+
+            // Cap the risk score at 100
+            riskScore = Math.min(Math.round(riskScore), 100);
+
+            // Map risk score to a cloudburst level (1-20)
+            let cloudburstLevel = Math.max(1, Math.ceil((riskScore / 100) * 20));
+
+            // Get level details from the CLOUDBURST_LEVELS array in script.js
+            const levelData = CLOUDBURST_LEVELS[cloudburstLevel - 1];
+
+            // Display the detailed prediction
+            const predictionResult = document.getElementById('prediction-result');
+            const predictionText = document.getElementById('prediction-text');
+
+            if (levelData) {
+                predictionText.innerHTML = `
+                    <strong>Level ${levelData.level}/20: ${levelData.label}</strong>
+                    <p>${levelData.description}</p>
+                `;
+            } else {
+                predictionText.textContent = 'Could not determine prediction level.';
+            }
+
+            predictionResult.style.display = 'block';
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 

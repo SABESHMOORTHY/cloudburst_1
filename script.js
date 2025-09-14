@@ -189,31 +189,31 @@ function dateManage(dateArg) {
 
 // function for the dynamic background change  according to weather status
 function changeBg(status) {
+    let imageUrl = '';
     if (status === 'Clouds') {
-        document.body.style.backgroundImage = 'url(clouds.jpg)';
-        
-
+        imageUrl = 'url(clouds.jpg)';
     } else if (status === 'Rain') {
-        document.body.style.backgroundImage = 'url(rainy.jpg)';
+        imageUrl = 'url(rainy.jpg)';
     } else if (status === 'Clear') {
-        document.body.style.backgroundImage = 'url(clear.jpg)';
-    }
-    else if (status === 'Snow') {
-        document.body.style.backgroundImage = 'url(snow.jpg)';
-    }
-    else if (status === 'Sunny') {
-        document.body.style.backgroundImage = 'url(sunny.jpg)';
+        imageUrl = 'url(clear.jpg)';
+    } else if (status === 'Snow') {
+        imageUrl = 'url(snow.jpg)';
+    } else if (status === 'Sunny') {
+        imageUrl = 'url(sunny.jpg)';
     } else if (status === 'Thunderstorm') {
-        document.body.style.backgroundImage = 'url(thunderstorm.png)';
+        imageUrl = 'url(thunderstorm.png)';
     } else if (status === 'Drizzle') {
-        document.body.style.backgroundImage = 'url(drizzle.jpg)';
+        imageUrl = 'url(drizzle.jpg)';
     } else if (status === 'Mist' || status === 'Haze' || status === 'Fog') {
-        document.body.style.backgroundImage = 'url(mist.jpg)';
+        imageUrl = 'url(mist.jpg)';
+    } else {
+        imageUrl = 'url(bg.jpg)';
     }
 
-    else {
-        document.body.style.backgroundImage = 'url(bg.jpg)';
-    }
+    document.body.style.backgroundImage = imageUrl;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
 }
 
 //making a function for the classname of icon
