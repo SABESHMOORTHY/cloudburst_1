@@ -275,8 +275,8 @@ const CLOUDBURST_LEVELS = [
 ];
 
 // Cloudburst prediction function
-function showCloudburstPrediction(weatherData) {
-    const predictionElement = document.getElementById('cloudburst-prediction');
+function showCloudburstPrediction(weatherData, targetElementId = 'cloudburst-prediction') {
+    const predictionElement = document.getElementById(targetElementId);
     const isTestData = weatherData.name && weatherData.name.startsWith('Test Location');
     
     // Get relevant weather data

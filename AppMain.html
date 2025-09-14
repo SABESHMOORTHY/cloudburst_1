@@ -60,6 +60,173 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Cloudburst prediction box styling */
+        .cloudburst-prediction {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            color: #333333;
+        }
+        
+        .cloudburst-prediction h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .cloudburst-prediction * {
+            color: #333333 !important;
+        }
+        
+        .cloudburst-prediction .alert-header h3 {
+            color: #007bff !important;
+        }
+        
+        /* Map page styling */
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Weather body styling for map page */
+        #map-weather-body {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #map-weather-body .location-deatils .city {
+            color: #333333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #map-weather-body .location-deatils .date {
+            color: #666666;
+            font-size: 14px;
+        }
+        
+        #map-weather-body .weather-status .temp {
+            color: #007bff;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        #map-weather-body .weather-status .weather {
+            color: #333333;
+            font-size: 16px;
+        }
+        
+        #map-weather-body .min-max {
+            color: #666666;
+            font-size: 14px;
+        }
+        
+        #map-weather-body .day-details .basic {
+            color: #333333;
+            font-size: 14px;
+        }
+        
+        .map-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .map-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .map-controls button:hover {
+            background-color: #0056b3;
+        }
+        
+        .location-info {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #333333;
+        }
+        
+        .location-info h4 {
+            color: #007bff;
+            margin: 0 0 10px 0;
+        }
+        
+        .location-info p {
+            color: #333333;
+            margin: 5px 0;
+            font-weight: 500;
+        }
+        
+        /* Fullscreen map styles */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .fullscreen-overlay.active {
+            display: block;
+        }
+        
+        .fullscreen-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .fullscreen-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fullscreen-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        #fullscreen-map {
+            height: calc(100vh - 70px);
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -68,6 +235,7 @@
         <div class="nav-buttons">
             <button class="nav-button active" onclick="showPage('weather')">Weather</button>
             <button class="nav-button" onclick="showPage('predictor')">Predictor</button>
+            <button class="nav-button" onclick="showPage('map')">Map</button>
         </div>
     </nav>
 
@@ -138,12 +306,54 @@
         </div>
     </div>
 
+    <!-- Map Page -->
+    <div id="map-page" class="page">
+        <div class="app-main card">
+            <h2>🗺️ Location-Based Weather & Cloudburst Prediction</h2>
+            
+            <div class="map-controls">
+                <button onclick="getCurrentLocation()">📍 Use Current Location</button>
+                <button onclick="clearSelection()">🗑️ Clear Selection</button>
+                <button onclick="openFullscreenMap()">🔍 Fullscreen Map</button>
+            </div>
+            
+            <div id="location-info" class="location-info" style="display: none;">
+                <h4>📍 Selected Location</h4>
+                <p id="selected-location">No location selected</p>
+                <p id="coordinates">Coordinates: --</p>
+            </div>
+            
+            <div id="map"></div>
+            
+            <div class="weather-body" id="map-weather-body" style="display: none;">
+                <!-- Weather data will be displayed here -->
+            </div>
+            
+            <div class="cloudburst-prediction" id="map-cloudburst-prediction">
+                <!-- Cloudburst prediction will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Map Overlay -->
+    <div id="fullscreen-overlay" class="fullscreen-overlay">
+        <div class="fullscreen-header">
+            <h3>🗺️ Select Location - Fullscreen Map</h3>
+            <button class="fullscreen-close" onclick="closeFullscreenMap()">✕</button>
+        </div>
+        <div id="fullscreen-map"></div>
+    </div>
+
     <!-- font awesome icon cdn  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- sweetalert cdn........ -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <!-- OpenStreetMap with Leaflet (Free Alternative) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         function showPage(pageId) {
@@ -219,6 +429,318 @@
 
             predictionResult.style.display = 'block';
         });
+
+        // Leaflet Map variables
+        let map;
+        let fullscreenMap;
+        let marker;
+        let fullscreenMarker;
+        let selectedLocation = null;
+
+        // Initialize Leaflet Map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map after a short delay to ensure DOM is ready
+            setTimeout(initMap, 500);
+        });
+
+        // Also initialize when switching to map page
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(pageId + '-page').classList.add('active');
+            document.querySelector(`.nav-button[onclick="showPage('${pageId}')"]`).classList.add('active');
+            
+            // Initialize map when switching to map page
+            if (pageId === 'map' && typeof L !== 'undefined') {
+                setTimeout(() => {
+                    if (map) {
+                        map.invalidateSize();
+                    } else {
+                        initMap();
+                    }
+                }, 100);
+            }
+        }
+
+        // Initialize Leaflet Map
+        function initMap() {
+            // Default location (center of India)
+            const defaultLocation = [20.5937, 78.9629];
+            
+            // Create map
+            map = L.map('map').setView(defaultLocation, 5);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add click listener to map
+            map.on('click', function(e) {
+                console.log('Map clicked at:', e.latlng);
+                selectLocation(e.latlng);
+            });
+
+            // Initialize marker (hidden initially)
+            marker = L.marker([0, 0], {draggable: true}).addTo(map);
+            marker.setOpacity(0);
+
+            // Add drag listener to marker
+            marker.on('dragend', function(e) {
+                selectLocation(e.target.getLatLng());
+            });
+        }
+
+        // Select location on map
+        function selectLocation(latlng) {
+            console.log('Location selected:', latlng);
+            selectedLocation = {
+                lat: latlng.lat,
+                lng: latlng.lng
+            };
+
+            // Update marker position and make visible
+            marker.setLatLng(latlng);
+            marker.setOpacity(1);
+
+            // Update location info
+            updateLocationInfo(selectedLocation);
+
+            // Get weather for selected location
+            console.log('Calling getWeatherByCoordinates with:', selectedLocation.lat, selectedLocation.lng);
+            getWeatherByCoordinates(selectedLocation.lat, selectedLocation.lng);
+        }
+
+        // Update location information display
+        function updateLocationInfo(location) {
+            const locationInfo = document.getElementById('location-info');
+            const selectedLocationEl = document.getElementById('selected-location');
+            const coordinatesEl = document.getElementById('coordinates');
+
+            // Use reverse geocoding with Nominatim (OpenStreetMap)
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        selectedLocationEl.textContent = data.display_name;
+                    } else {
+                        selectedLocationEl.textContent = `Lat: ${location.lat.toFixed(4)}, Lng: ${location.lng.toFixed(4)}`;
+                    }
+                })
+                .catch(() => {
+                    selectedLocationEl.textContent = `Lat: ${location.lat.toFixed(4)}, Lng: ${location.lng.toFixed(4)}`;
+                });
+
+            coordinatesEl.textContent = `Coordinates: ${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`;
+            locationInfo.style.display = 'block';
+        }
+
+        // Get current GPS location
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const location = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        // Center map on current location
+                        map.setView([location.lat, location.lng], 12);
+                        
+                        // Select current location
+                        selectLocation(L.latLng(location.lat, location.lng));
+                    },
+                    (error) => {
+                        swal("Location Error", "Unable to get your current location. Please select a location on the map.", "error");
+                    }
+                );
+            } else {
+                swal("Geolocation Not Supported", "Your browser doesn't support geolocation. Please select a location on the map.", "error");
+            }
+        }
+
+        // Clear location selection
+        function clearSelection() {
+            selectedLocation = null;
+            marker.setOpacity(0);
+            if (fullscreenMarker) {
+                fullscreenMarker.setOpacity(0);
+            }
+            document.getElementById('location-info').style.display = 'none';
+            document.getElementById('map-weather-body').style.display = 'none';
+            document.getElementById('map-cloudburst-prediction').style.display = 'none';
+        }
+
+        // Open fullscreen map
+        function openFullscreenMap() {
+            const overlay = document.getElementById('fullscreen-overlay');
+            overlay.classList.add('active');
+            
+            // Initialize fullscreen map
+            setTimeout(() => {
+                initFullscreenMap();
+            }, 100);
+        }
+
+        // Close fullscreen map
+        function closeFullscreenMap() {
+            const overlay = document.getElementById('fullscreen-overlay');
+            overlay.classList.remove('active');
+            
+            // Clean up fullscreen map
+            if (fullscreenMap) {
+                fullscreenMap.remove();
+                fullscreenMap = null;
+                fullscreenMarker = null;
+            }
+        }
+
+        // Initialize fullscreen map
+        function initFullscreenMap() {
+            // Default location (center of India) - more zoomed out
+            const defaultLocation = [20.5937, 78.9629];
+            
+            // Create fullscreen map with lower zoom for better overview
+            fullscreenMap = L.map('fullscreen-map').setView(defaultLocation, 3);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(fullscreenMap);
+
+            // Add click listener to fullscreen map
+            fullscreenMap.on('click', function(e) {
+                console.log('Fullscreen map clicked at:', e.latlng);
+                selectLocationFromFullscreen(e.latlng);
+            });
+
+            // Initialize fullscreen marker (hidden initially)
+            fullscreenMarker = L.marker([0, 0], {draggable: true}).addTo(fullscreenMap);
+            fullscreenMarker.setOpacity(0);
+
+            // Add drag listener to fullscreen marker
+            fullscreenMarker.on('dragend', function(e) {
+                selectLocationFromFullscreen(e.target.getLatLng());
+            });
+
+            // If there's already a selected location, show it on fullscreen map
+            if (selectedLocation) {
+                fullscreenMarker.setLatLng([selectedLocation.lat, selectedLocation.lng]);
+                fullscreenMarker.setOpacity(1);
+                fullscreenMap.setView([selectedLocation.lat, selectedLocation.lng], 8);
+            }
+        }
+
+        // Select location from fullscreen map
+        function selectLocationFromFullscreen(latlng) {
+            console.log('Location selected from fullscreen:', latlng);
+            
+            // Update fullscreen marker
+            fullscreenMarker.setLatLng(latlng);
+            fullscreenMarker.setOpacity(1);
+            
+            // Update the main map marker as well
+            if (marker) {
+                marker.setLatLng(latlng);
+                marker.setOpacity(1);
+                map.setView([latlng.lat, latlng.lng], 12);
+            }
+            
+            // Update selected location
+            selectedLocation = {
+                lat: latlng.lat,
+                lng: latlng.lng
+            };
+
+            // Update location info
+            updateLocationInfo(selectedLocation);
+
+            // Get weather for selected location
+            console.log('Calling getWeatherByCoordinates from fullscreen with:', selectedLocation.lat, selectedLocation.lng);
+            getWeatherByCoordinates(selectedLocation.lat, selectedLocation.lng);
+            
+            // Auto-close fullscreen after selection (optional)
+            setTimeout(() => {
+                closeFullscreenMap();
+            }, 1000);
+        }
+
+        // Get weather by coordinates
+        function getWeatherByCoordinates(lat, lng) {
+            console.log('Fetching weather for coordinates:', lat, lng);
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=4eb3703790b356562054106543b748b2&units=metric`)
+                .then(response => {
+                    console.log('Weather API response status:', response.status);
+                    return response.json();
+                })
+                .then(weather => {
+                    console.log('Weather data received:', weather);
+                    showMapWeatherReport(weather);
+                })
+                .catch(error => {
+                    console.error('Weather API error:', error);
+                    swal("Weather Error", "Unable to fetch weather data for this location.", "error");
+                });
+        }
+
+        // Show weather report for map location
+        function showMapWeatherReport(weather) {
+            console.log('Showing weather report for map location');
+            const weatherBody = document.getElementById('map-weather-body');
+            const cloudburstPrediction = document.getElementById('map-cloudburst-prediction');
+            
+            console.log('Weather body element:', weatherBody);
+            console.log('Cloudburst prediction element:', cloudburstPrediction);
+            
+            if (weather.cod !== 200) {
+                console.error('Weather API returned error code:', weather.cod);
+                swal("Weather Error", "Unable to get weather data for this location.", "error");
+                return;
+            }
+
+            weatherBody.style.display = 'block';
+            cloudburstPrediction.style.display = 'block';
+
+            let todayDate = new Date();
+
+            // Update weather information
+            weatherBody.innerHTML = `
+                <div class="location-deatils">
+                    <div class="city" id="city">${weather.name}, ${weather.sys.country}</div>
+                    <div class="date" id="date">${dateManage(todayDate)}</div>
+                </div>
+                <div class="weather-status">
+                    <div class="temp" id="temp">${Math.round(weather.main.temp)}&deg;C</div>
+                    <div class="weather" id="weather">
+                        ${weather.weather[0].main} <i class="${getIconClass(weather.weather[0].main)}"></i>
+                    </div>
+                    <div class="min-max" id="min-max">
+                        ${Math.floor(weather.main.temp_min)}&deg;C (min) / ${Math.ceil(weather.main.temp_max)}&deg;C (max)
+                    </div>
+                    <div id="updated_on">Updated as of ${getTime(todayDate)}</div>
+                </div>
+                <hr>
+                <div class="day-details">
+                    <div class="basic">
+                        Feels like ${weather.main.feels_like}&deg;C | 
+                        Humidity ${weather.main.humidity}%<br>
+                        Pressure ${weather.main.pressure} mb | 
+                        Wind ${weather.wind.speed} KMPH
+                    </div>
+                </div>
+            `;
+
+            console.log('Weather HTML updated');
+
+            // Show cloudburst prediction
+            showCloudburstPrediction(weather, 'map-cloudburst-prediction');
+            console.log('Cloudburst prediction called');
+        }
     </script>
     <script src="script.js"></script>
 </body>
